@@ -2,6 +2,7 @@ package com.spring.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -9,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity // 필터 체인 관리 시작 어노테이션
+// secured 어노테이션 활성화, preAuthorize 어노테이션 활성화
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) 
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	// 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다.
@@ -24,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		http.authorizeRequests()
 			.antMatchers("/user/**").authenticated() // 인증만 되면 들어갈 수 있는 주소
-			.antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+			.antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().permitAll()
 			.and()
