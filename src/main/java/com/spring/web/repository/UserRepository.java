@@ -8,4 +8,8 @@ import com.spring.web.model.User;
 // @Repository라는 어노테이션이 없어도 IoC가 된다. 이유는 JpaRepository를 상속했기 때문에
 public interface UserRepository extends JpaRepository<User, Integer>{
 
+	// findBy규칙 -> Username 문법
+	// select * from user where username = ?
+	public User findByUsername(String username);
+
 }

@@ -23,12 +23,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		http.csrf().disable();
 		http.authorizeRequests()
-			.antMatchers("/user/**").authenticated()
+			.antMatchers("/user/**").authenticated() // 인증만 되면 들어갈 수 있는 주소
 			.antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
-			.loginPage("/loginForm");
+			.loginPage("/loginForm")
+			//.usernameParameter("username2")
+			.loginProcessingUrl("/login") // login 주소가 호출되면 시큐리티가 낚아채서 대신 로그인을 진행해 준다.
+			.defaultSuccessUrl("/");
 	}
 }
